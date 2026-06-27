@@ -30,19 +30,20 @@ function operate(operator, a, b) {
     }
 }
 
+//only for UI purposes
 function toggleSelectedOperation(newOperation = null) {
-    if (selectedOperation) selectedOperation.classList.toggle("selected");
-    selectedOperation = newOperation;
-    if (newOperation) selectedOperation.classList.toggle("selected");
+    if (selectedOperationUI) selectedOperationUI.classList.toggle("selected");
+    selectedOperationUI = newOperation;
+    if (newOperation) selectedOperationUI.classList.toggle("selected");
 }
 
-function handleDisplayText(digit) {
+function handleDigitInput(digit) {
     //if you click on the digits container, will print everything
     if (digit.length > 1) return;
 
     let displayText = display.textContent;
 
-    if (selectedOperation) {
+    if (selectedOperationUI) {
         confirmOperation();
     }
     
@@ -61,42 +62,40 @@ function handleDisplayText(digit) {
     
 }
 
-function setOperand(operation) {
+function setOperand() {
     let operand = parseInt(display.textContent);
 
-    if (A && B) {
-        //reverse A and B during the 12 + 7 (op) stage?
-        B = operate(operation, A, B);
-        A = null;
-        display.textContent = B;
-    }
-    else if (!A && !B) A = operand;
+    if (!A) A = operand;
     else B = operand;
-    //wont work b/c of sequences, unlses array and use operation to also do equal's job
-    //only if a nad ba are both not null
-    //so if a and b are set and press operation, set b null and a to result
-    //equal sign will clear both a and b
+
+    if (A && B) {
+        A = operate(operator, A, B);
+        B = null;
+        display.textContent = A;
+    }
 }
 
 //triggers after pressing operation and then a digit
 function confirmOperation() {
     toggleSelectedOperation();
     display.textContent = "";
-    if (B && !A) [A, B] = [B, A];
 }
 
 function handleOperationInput(e) {
-    //at the 12 + 7 (op) step, display 19 now
-    if (A && B) {
-        setOperand(e.target.displayText);
+    //the initial operation input
+    if (!selectedOperationUI) {
+        setOperand();
+        
     }
     resetDecimal();
     toggleSelectedOperation(e.target);
+    operator = e.target.textContent;
 }
 
 function handleClear() {
     A = null;
     B = null;
+    operator = null;
     toggleSelectedOperation(0);
     display.textContent = "0";
 }
@@ -115,10 +114,10 @@ const equalButton = document.querySelector("#equals");
 let A = null;
 let B = null;
 let operator = null;
-let selectedOperation = null;
+let selectedOperationUI = null;
 
 
-digits.addEventListener("click", e => handleDisplayText(e.target.textContent));
+digits.addEventListener("click", e => handleDigitInput(e.target.textContent));
 
 operations.addEventListener("click", handleOperationInput);
 
