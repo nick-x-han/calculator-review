@@ -33,6 +33,10 @@ button:active {
     background-color: gray;
 }
 
+button:disabled {
+    background-color: beige;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
