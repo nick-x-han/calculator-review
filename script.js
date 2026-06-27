@@ -37,6 +37,9 @@ function toggleSelectedOperation(newOperation = null) {
 }
 
 function handleDisplayText(digit) {
+    //if you click on the digits container, will print everything
+    if (digit.length > 1) return;
+
     let displayText = display.textContent;
     //if an operation was selected before, stop showing it as selected
     toggleSelectedOperation();
