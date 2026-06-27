@@ -47,12 +47,13 @@ function handleDisplayText(e) {
     
 }
 
-function setA() {
-
+function setOperand() {
+    if (!A) B = 4;
+    //wont work b/c of sequences
 }
 
 function clear() {
-    
+
 }
 
 function resetDecimal() {
@@ -60,7 +61,7 @@ function resetDecimal() {
 }
 
 function handleOperationInput(e) {
-    setA();
+    setOperand();
     resetDecimal();
 }
 
