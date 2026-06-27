@@ -30,19 +30,20 @@ function operate(operator, a, b) {
     }
 }
 
-function toggleSelectedOperation(newOperation) {
+function toggleSelectedOperation(newOperation = null) {
     if (selectedOperation) selectedOperation.classList.toggle("selected");
     selectedOperation = newOperation;
     if (selectedOperation) selectedOperation.classList.toggle("selected");
 }
 
-function handleDisplayText(e) {
-    let digit = e.target.textContent;
+function handleDisplayText(digit) {
     let displayText = display.textContent;
+    //if an operation was selected before, stop showing it as selected
     toggleSelectedOperation();
 
-    if (display.textContent === "0") display.textContent = "";
-    if (display.textContent.includes(".")) decimalButton.disabled = true;
+    //if 0 and then press '.', display 0.; else, remove the 0
+    if (display.textContent === "0" && digit !== '.') display.textContent = "";
+    if (display.textContent.includes(".") || digit == '.') decimalButton.disabled = true;
     else decimalButton.disabled = false;
 
     if (digit == '-') {
@@ -69,8 +70,11 @@ function setOperand() {
     //equal sign will clear both a and b
 }
 
-function clear() {
-
+function handleClear() {
+    A = null;
+    B = null;
+    toggleSelectedOperation(0);
+    display.textContent = "0";
 }
 
 function resetDecimal() {
@@ -87,10 +91,13 @@ const digits = document.querySelector(".digits");
 const display = document.querySelector("#display");
 const operations = document.querySelector(".operations");
 const decimalButton = document.querySelector("#decimal");
+const clearButton = document.querySelector("#clear");
 
-digits.addEventListener("click", handleDisplayText);
+digits.addEventListener("click", e => handleDisplayText(e.target.textContent));
 
 operations.addEventListener("click", handleOperationInput);
+
+clearButton.addEventListener("click", handleClear);
 
 let A = null;
 let B = null;
