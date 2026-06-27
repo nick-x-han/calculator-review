@@ -33,7 +33,7 @@ function operate(operator, a, b) {
 function toggleSelectedOperation(newOperation = null) {
     if (selectedOperation) selectedOperation.classList.toggle("selected");
     selectedOperation = newOperation;
-    if (selectedOperation) selectedOperation.classList.toggle("selected");
+    if (newOperation) selectedOperation.classList.toggle("selected");
 }
 
 function handleDisplayText(digit) {
@@ -41,9 +41,12 @@ function handleDisplayText(digit) {
     if (digit.length > 1) return;
 
     let displayText = display.textContent;
-    //if an operation was selected before, stop showing it as selected
-    toggleSelectedOperation();
 
+    if (selectedOperation) {
+        confirmOperation();
+    }
+    
+//PLAN: updateDisplay function
     //if 0 and then press '.', display 0.; else, remove the 0
     if (display.textContent === "0" && digit !== '.') display.textContent = "";
     if (display.textContent.includes(".") || digit == '.') decimalButton.disabled = true;
@@ -58,19 +61,37 @@ function handleDisplayText(digit) {
     
 }
 
-function setOperand() {
+function setOperand(operation) {
     let operand = parseInt(display.textContent);
 
     if (A && B) {
-        A = A + B;
-        B = null;
+        //reverse A and B during the 12 + 7 (op) stage?
+        B = operate(operation, A, B);
+        A = null;
+        display.textContent = B;
     }
-    else if (!A) A = operand;
+    else if (!A && !B) A = operand;
     else B = operand;
     //wont work b/c of sequences, unlses array and use operation to also do equal's job
     //only if a nad ba are both not null
     //so if a and b are set and press operation, set b null and a to result
     //equal sign will clear both a and b
+}
+
+//triggers after pressing operation and then a digit
+function confirmOperation() {
+    toggleSelectedOperation();
+    display.textContent = "";
+    if (B && !A) [A, B] = [B, A];
+}
+
+function handleOperationInput(e) {
+    //at the 12 + 7 (op) step, display 19 now
+    if (A && B) {
+        setOperand(e.target.displayText);
+    }
+    resetDecimal();
+    toggleSelectedOperation(e.target);
 }
 
 function handleClear() {
@@ -84,17 +105,18 @@ function resetDecimal() {
     decimalButton.disabled = false;
 }
 
-function handleOperationInput(e) {
-    setOperand();
-    resetDecimal();
-    toggleSelectedOperation(e.target);
-}
-
 const digits = document.querySelector(".digits");
 const display = document.querySelector("#display");
 const operations = document.querySelector(".operations");
 const decimalButton = document.querySelector("#decimal");
 const clearButton = document.querySelector("#clear");
+const equalButton = document.querySelector("#equals");
+
+let A = null;
+let B = null;
+let operator = null;
+let selectedOperation = null;
+
 
 digits.addEventListener("click", e => handleDisplayText(e.target.textContent));
 
@@ -102,7 +124,7 @@ operations.addEventListener("click", handleOperationInput);
 
 clearButton.addEventListener("click", handleClear);
 
-let A = null;
-let B = null;
-let operator = null;
-let selectedOperation = null;
+equalButton.addEventListener("click", () => {
+
+})
+
