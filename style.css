@@ -13,12 +13,13 @@
     border: 16px solid black;
     text-align: right;
     height: 100px;
-    font-size: 32px;
+    font-size: 24px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     background-color: olive;
     box-sizing: border-box;
+    overflow-x: auto;
 }
 
 button {
