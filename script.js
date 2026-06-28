@@ -124,6 +124,7 @@ const operations = document.querySelector(".operations");
 const decimalButton = document.querySelector("#decimal");
 const clearButton = document.querySelector("#clear");
 const equalButton = document.querySelector("#equals");
+const backspace = document.querySelector("#backspace");
 
 let A = null;
 let B = null;
@@ -142,5 +143,16 @@ equalButton.addEventListener("click", (e) => {
     setOperand();
     resetNumbersUI();
     quickClear = true;
+})
+
+backspace.addEventListener("click", (e) => {
+    if (selectedOperationUI) return;
+
+    if (display.textContent.length > 1) {
+        display.textContent = display.textContent.slice(0, -1);
+    }
+    else {
+        display.textContent = 0;
+    }
 })
 
