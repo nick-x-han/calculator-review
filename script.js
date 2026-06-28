@@ -74,7 +74,7 @@ function setOperand() {
     if (A && B) {
         A = operate(operator, A, B);
         B = null;
-        display.textContent = A;
+        display.textContent = Number.isInteger(A) ? A : A.toFixed(1);
     }
 }
 
