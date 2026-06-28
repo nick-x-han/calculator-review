@@ -13,6 +13,8 @@ function multiply(a, b) {
 function divide(a, b) {
     if (b === 0) {
         alert("Hilarious.");
+        handleClear();
+        return;
     }
     return a / b;
 }
@@ -75,7 +77,7 @@ function setOperand() {
     if (!A) A = operand;
     else B = operand;
 
-    if (A && B) {
+    if (A != null && B != null) {
         A = operate(operator, A, B);
         B = null;
         display.textContent = Number.isInteger(A) ? A : A.toFixed(1);
