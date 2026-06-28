@@ -49,6 +49,9 @@ function handleDigitInput(digit) {
     if (selectedOperationUI) {
         confirmOperation();
     }
+
+    //after pressing equals, new digit inputs resets calculator
+    if (display.textContent !== "0" && !A && !B && !operator) handleClear();
     
 //PLAN: updateDisplay function
     //if 0 and then press '.', display 0.; else, remove the 0
