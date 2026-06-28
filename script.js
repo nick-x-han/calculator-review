@@ -95,11 +95,15 @@ function handleOperationInput(e) {
     operator = e.target.textContent;
 }
 
-function handleClear() {
+function resetNumbersUI() {
     A = null;
     B = null;
     operator = null;
-    toggleSelectedOperation(0);
+    toggleSelectedOperation();
+    resetDecimal();
+}
+function handleClear() {
+    resetNumbersUI();
     display.textContent = "0";
 }
 
@@ -127,6 +131,7 @@ operations.addEventListener("click", handleOperationInput);
 clearButton.addEventListener("click", handleClear);
 
 equalButton.addEventListener("click", (e) => {
-
+    setOperand();
+    resetNumbersUI();
 })
 
