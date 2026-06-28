@@ -11,6 +11,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b === 0) {
+        alert("Hilarious.");
+    }
     return a / b;
 }
 
@@ -63,7 +66,7 @@ function handleDigitInput(digit) {
 }
 
 function setOperand() {
-    let operand = parseInt(display.textContent);
+    let operand = parseFloat(display.textContent);
 
     if (!A) A = operand;
     else B = operand;
@@ -123,7 +126,7 @@ operations.addEventListener("click", handleOperationInput);
 
 clearButton.addEventListener("click", handleClear);
 
-equalButton.addEventListener("click", () => {
+equalButton.addEventListener("click", (e) => {
 
 })
 
