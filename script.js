@@ -50,9 +50,10 @@ function handleDigitInput(digit) {
         confirmOperation();
     }
 
-    //after pressing equals, new digit inputs resets calculator
-    if (display.textContent !== "0" && !A && !B && !operator) handleClear();
-    
+    if (quickClear) {
+        quickClear = false;
+        handleClear();
+    }
 //PLAN: updateDisplay function
     //if 0 and then press '.', display 0.; else, remove the 0
     if (display.textContent === "0" && digit !== '.') display.textContent = "";
@@ -88,6 +89,7 @@ function confirmOperation() {
 }
 
 function handleOperationInput(e) {
+    quickClear = false;
     //the initial operation input
     if (!selectedOperationUI) {
         setOperand();
@@ -125,6 +127,7 @@ let A = null;
 let B = null;
 let operator = null;
 let selectedOperationUI = null;
+let quickClear = false;
 
 
 digits.addEventListener("click", e => handleDigitInput(e.target.textContent));
@@ -136,5 +139,6 @@ clearButton.addEventListener("click", handleClear);
 equalButton.addEventListener("click", (e) => {
     setOperand();
     resetNumbersUI();
+    quickClear = true;
 })
 
